@@ -61,7 +61,7 @@
 				<input id="username" name="username" placeholder="Username" type="text"/>
 				<input id="email" name="email" placeholder="Email Address" type="email"/>
 				<select id="access" name="access">
-					<option>---Select Member Access Level.</option>
+					<option>---Select Member Access Level</option>
 					<option value="1">1</option>
 					<option value="2">2</option>
 				</select> 

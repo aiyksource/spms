@@ -59,7 +59,6 @@
 			?>
 			<span class="sub_head">Add New Member</span>
 			<form id="addMember_form" method="POST" action="addMember.php">
-<<<<<<< HEAD
 				<div class="input-wrap">
 					<label for="staff_firstname">First Name:</label>
 					<input id="staff_firstname" name="staff_firstname" type="text"/>
@@ -77,18 +76,6 @@
 					<input id="staff_email" name="staff_email" type="email"/>
 				</div><hr>
 				<input type ="submit" id="sbt_addMember" name="sbt_addMember" class="button" value="ADD THIS STAFF"/>
-=======
-				<input id="firstname" name="firstname" placeholder="First Name" type="text"/>
-				<input id="lastname" name="lastname" placeholder="Last Name" type="text"/>
-				<input id="username" name="username" placeholder="Username" type="text"/>
-				<input id="email" name="email" placeholder="Email Address" type="email"/>
-				<select id="access" name="access">
-					<option>---Select An Access Level</option>
-					<option value="1">1</option>
-					<option value="2">2</option>
-				</select> 
-				<input type ="submit" id="sbt_addMember" name="sbt_addMember" class="button" value="Add Member"/>
->>>>>>> origin/master
 			</form>
 	    </div>
 	</div>

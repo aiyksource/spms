@@ -51,8 +51,14 @@
 			?>
 			<span class="sub_head">System Log In</span>
 			<form id="login_form" method="POST" action="login.php">
-				<input id="username" name="username" placeholder="Username" type="text"/>
-				<input id="password" name="password" placeholder="Password" type="password"/>
+				<div class="input-wrap">
+					<label for="username">Username or Email:</label>
+					<input id="username" name="username" type="text"/>
+				</div>
+				<div class="input-wrap">
+					<label for="password">Password:</label>
+					<input id="password" name="password" placeholder="Password" type="password"/>
+				</div>
 				<input type ="submit" id="sbt_login" name="sbt_login" class="button" value="Log In"/>
 			</form>
 		</div>

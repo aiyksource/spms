@@ -130,3 +130,24 @@ label{
 	width: 80%;
 	margin: 0px auto;
 }
+#ul_categoriesDisplay{
+	display: block;
+	position: absolute;
+	width: 100%;
+	text-align: center;
+	z-index: 1;
+	background: #fff;
+	box-sizing: border-box;
+	-webkit-transition: all 1s ease-in-out;
+  	-moz-transition: all 1s ease-in-out;
+  	-ms-transition: all 1s ease-in-out;
+  	-o-transition: all 1s ease-in-out;
+}
+.suggestedCat{
+	cursor: pointer;
+	padding: 3px 6px;
+	margin: 5px;
+	background: #fff;
+	border: 1px solid #888888;
+	color: #888888;
+}

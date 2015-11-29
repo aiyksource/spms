@@ -36,7 +36,7 @@
 	<div class="container">
 		<?php 
         	if(isset($_SESSION['user']) && isset($_SESSION['access'])){
-				if( $_SESSION['access']==1 OR $_SESSION['access']==3){
+				if($_SESSION['access']==3){
 					$user= $_SESSION['user'];
 					echo'<div id="loggedinuser">Hello '.$user.' <a href="signout.php">Log Out</a></div>';
 				} else{

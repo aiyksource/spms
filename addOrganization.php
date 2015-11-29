@@ -37,6 +37,20 @@
 <head>
 	<title>SPMS - New Organization</title>
 	<link href="css/main.css" rel="stylesheet" type="text/css"/>
+
+	<script type="text/javascript">
+		$('#org_category').on('focus', function(){	
+			$('#ul_categoriesDisplay').fadeIn();
+		});
+		$('#org_category').on('blur', function(){	
+			$('#ul_categoriesDisplay').fadeOut();
+		});
+		function auto_suggest(element){
+			$('#org_category').val(element.text());
+			$('#ul_categoriesDisplay').fadeOut();
+		}
+
+	</script>
 </head>
 <body>
 	<div class="container">
@@ -66,7 +80,7 @@
 				<div class="input-wrap"><?php //like a search box which outputs sugestions as the user types a category?>
 					<label for="org_category">Category:</label>
 					<input id="org_category" name="org_category" type="text"/>
-					<ul id="ul_categoriesDisplay"></ul>
+					<div id="ul_categoriesDisplay"></div>
 				</div>
 				<div class="input-wrap">
 					<label for="org_email">Email Address:</label>
@@ -82,6 +96,5 @@
 	</div>
 	<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="js/ajax.js"></script>
-    <script type="text/javascript" src="js/categorySuggest.js"></script>
 </body>
 </html>

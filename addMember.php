@@ -6,20 +6,28 @@
        
         $firstname = $_POST['staff_firstname'];
         $lastname = $_POST['staff_lastname'];
+        $fullname = $firstname.' '.$lastname;
         $title = $_POST['staff_title'];
         $email = $_POST['staff_email'];
+        $org = $_SESSION['id'];
 
         if (empty($firstname) OR empty($lastname) OR empty($title) OR empty($email)) {
            $error = 'all fields are required';
         } else{
             
-            $db->get_results("SELECT * FROM members WHERE username = '$username' LIMIT 1");
+            $db->get_results("SELECT * FROM users WHERE email = '$email' LIMIT 1");
 			$number_of_records = $db->num_rows;
 			if($number_of_records==0){
 				$password = md5('password');
-	            $db->query("INSERT INTO members (id, firstname, lastname, username, password, email, access, date_added) 
-	                VALUES (NULL, '".$firstname."', '".$lastname."', '".$title."', '".$password."', '".$email."', '4', ". $db->sysdate()." )");
-	        	$success = $firstname.' '.$lastname.' successfully added.';
+	            if($db->query("INSERT INTO members (id, firstname, lastname, job_title, password, email, organization, access, date_added) 
+	                VALUES (NULL, '".$firstname."', '".$lastname."', '".$title."', '".$password."', '".$email."', '".$org."', '4', ". $db->sysdate()." )"))
+	        	{
+	        		if ($db->query("INSERT INTO users (id, username, email, password, access, date_added) 
+	                VALUES (NULL, '".$fullname."', '".$email."',  '".$password."', '4', ". $db->sysdate()." )")) 
+	            	{
+	            		$success = $firstname.' '.$lastname.' successfully added.';
+	            	}
+	        	}
 			} else{
 				$error = 'username unavailable';
 			}
@@ -29,14 +37,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>SPMS - New Member</title>
+	<title>SPMS - New Staff</title>
 	<link href="css/main.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 	<div class="container">
 		<?php 
         	if(isset($_SESSION['user']) && isset($_SESSION['access'])){
-				if($_SESSION['access']==3){
+				if( $_SESSION['access']==3){
 					$user= $_SESSION['user'];
 					echo'<div id="loggedinuser">Hello '.$user.' <a href="signout.php">Log Out</a></div>';
 				} else{
@@ -57,7 +65,7 @@
 					echo '<div class="success">'.$success.'</div>';
 				}
 			?>
-			<span class="sub_head">Add New Member</span>
+			<span class="sub_head">Add New Staff</span>
 			<form id="addMember_form" method="POST" action="addMember.php">
 				<div class="input-wrap">
 					<label for="staff_firstname">First Name:</label>

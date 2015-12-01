@@ -13,15 +13,20 @@
            $error = 'all fields are required';
         } else{
             
-            $db->get_results("SELECT * FROM tbl_organizations WHERE org_email = '$org_email' LIMIT 1");
+            $db->get_results("SELECT * FROM users WHERE email = '$org_email' LIMIT 1");
 			$number_of_records = $db->num_rows;
 			if($number_of_records==0){
 	            if($db->query("INSERT INTO tbl_organizations (id, name, logo, category, description, location, links, org_password, org_email, access_key, date_added) 
 	                VALUES (NULL, '".$org_name."', 'images/org_logo/default.jpg', '".$org_category."', '', '', '', '".$org_password."', '".$org_email."', '3', ". $db->sysdate()." )"))
 	            {
-	            	$success = $org_name.' successfully created.';
-	            	$_SESSION['user'] = $org_name;
-					$_SESSION['access'] = 3;
+	            	if ($db->query("INSERT INTO users (id, username, email, password, access, date_added) 
+	                VALUES (NULL, '".$org_name."', '".$org_email."',  '".$org_password."', '3', ". $db->sysdate()." )")) 
+	            	{
+	            		$success = $org_name.' successfully created.';
+		            	$_SESSION['user'] = $org_name;
+						$_SESSION['access'] = 3;
+	            	}
+
 	            } else{
 	            	$error=$org_name." wasn\'t successfully created, try again later.";
 	            }
@@ -37,13 +42,13 @@
 <head>
 	<title>SPMS - New Organization</title>
 	<link href="css/main.css" rel="stylesheet" type="text/css"/>
-
+	
 	<script type="text/javascript">
-		$('#org_category').on('focus', function(){	
+		$('#org_category').on('focusin', function(){	
 			$('#ul_categoriesDisplay').fadeIn();
 		});
-		$('#org_category').on('blur', function(){	
-			$('#ul_categoriesDisplay').fadeOut();
+		$('#org_category').on('focusout', function(){	
+			$('#ul_categoriesDisplay').hide();
 		});
 		function auto_suggest(element){
 			$('#org_category').val(element.text());
@@ -77,7 +82,7 @@
 					<label for="org_name">Organization:</label>
 					<input id="org_name" name="org_name" type="text"/>
 				</div>
-				<div class="input-wrap"><?php //like a search box which outputs sugestions as the user types a category?>
+				<div class="input-wrap">
 					<label for="org_category">Category:</label>
 					<input id="org_category" name="org_category" type="text"/>
 					<div id="ul_categoriesDisplay"></div>

@@ -12,12 +12,15 @@
 		$password = md5($_POST['password']);
 
 		if (!empty($username) && !empty($password)) {
-			$query = $db->get_row("SELECT username, access FROM members WHERE username = '".$username."' AND password = '".$password."'");
+			$query = $db->get_row("SELECT * FROM users WHERE username = '".$username."' OR email = '".$username."' AND password = '".$password."'");
 			if($query == 1){
 				$username = $query->username;
+				$id = $query->id;
+				$email = $query->email;
 				$access = $query->access;
-				if (!empty($username) AND !empty($password)) {
+				if (!empty($username) AND !empty($id) AND !empty($password)) {
 					$_SESSION['user'] = $username;
+					$_SESSION['id'] = $id;
 					$_SESSION['access'] = $access;
 					 
 					$db->disconnect();

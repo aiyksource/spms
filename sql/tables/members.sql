@@ -5,6 +5,7 @@ CREATE TABLE members(
 	job_title varchar(255) NOT NULL,
 	password varchar(255) NOT NULL,
 	email varchar(255) NOT NULL,
+	avatar varchar(255) NOT NULL,
 	organization int(11) NOT NULL,	
 	access varchar(2) NOT NULL,
 	date_added datetime NOT NULL,

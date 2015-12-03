@@ -16,14 +16,19 @@
             $db->get_results("SELECT * FROM users WHERE email = '$org_email' LIMIT 1");
 			$number_of_records = $db->num_rows;
 			if($number_of_records==0){
-	            if($db->query("INSERT INTO tbl_organizations (id, name, logo, category, description, location, links, org_password, org_email, access_key, date_added) 
-	                VALUES (NULL, '".$org_name."', 'images/org_logo/default.jpg', '".$org_category."', '', '', '', '".$org_password."', '".$org_email."', '3', ". $db->sysdate()." )"))
+	            if($db->query("INSERT INTO tbl_organizations (id, name, avatar, category, description, location, links, org_password, org_email, access_key, staff_count, fans, post_count, share_count, date_added) 
+	                VALUES (NULL, '".$org_name."', 'images/org_logo/default.jpg', '".$org_category."', '', '', '', '".$org_password."', '".$org_email."', '3', '0', '0', '0', '0', ". $db->sysdate()." )"))
 	            {
 	            	if ($db->query("INSERT INTO users (id, username, email, password, access, date_added) 
 	                VALUES (NULL, '".$org_name."', '".$org_email."',  '".$org_password."', '3', ". $db->sysdate()." )")) 
 	            	{
+	            		$query = $db->get_results("SELECT id FROM tbl_organizations WHERE org_email = '$org_email' LIMIT 1");
+	            		foreach ( $query as $result ) {
+			        		$id = $result->id;
+			        	}
 	            		$success = $org_name.' successfully created.';
 		            	$_SESSION['user'] = $org_name;
+		            	$_SESSION['id'] = $id;
 						$_SESSION['access'] = 3;
 	            	}
 

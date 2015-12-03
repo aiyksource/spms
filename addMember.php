@@ -19,8 +19,8 @@
 			$number_of_records = $db->num_rows;
 			if($number_of_records==0){
 				$password = md5('password');
-	            if($db->query("INSERT INTO members (id, firstname, lastname, job_title, password, email, organization, access, date_added) 
-	                VALUES (NULL, '".$firstname."', '".$lastname."', '".$title."', '".$password."', '".$email."', '".$org."', '4', ". $db->sysdate()." )"))
+	            if($db->query("INSERT INTO members (id, firstname, lastname, job_title, password, email, avatar, organization, access, date_added) 
+	                VALUES (NULL, '".$firstname."', '".$lastname."', '".$title."', '".$password."', '".$email."', 'images/member_logo/default.jpg', '".$org."', '4', ". $db->sysdate()." )"))
 	        	{
 	        		if ($db->query("INSERT INTO users (id, username, email, password, access, date_added) 
 	                VALUES (NULL, '".$fullname."', '".$email."',  '".$password."', '4', ". $db->sysdate()." )")) 

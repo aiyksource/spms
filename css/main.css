@@ -55,7 +55,7 @@ input[type="text"], input[type="password"], input[type="email"], select{
 	display: block;
 	width: 500px;
 	height: 40px;
-	border: 1px solid #1a7ed2;
+	border: 1px solid #0098d1;
 	padding: 2px 6px 2px 157px;
 	box-sizing: border-box;
 	font-size: 18px;
@@ -92,8 +92,8 @@ label{
 .button{
 	display: block;
 	margin: 15px auto;
-	border: 1px solid #2982e7;
-	color: #2982e7;
+	border: 1px solid #0098d1;
+	color: #0098d1;
 	background: transparent;
 	font-size: 22px;
 	font-weight: lighter;
@@ -105,7 +105,7 @@ label{
   	-o-transition: all 0.30s ease-in-out;
 }
 .button:hover{
-	background-color: #2982e7;
+	background-color: #0098d1;
 	color: #fff;
 	cursor: pointer;
 	border: 1px solid #3594ff;

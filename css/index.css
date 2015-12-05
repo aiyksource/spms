@@ -11,6 +11,8 @@ body {
 	box-shadow: 5px 5px 35px #000000;
 	-moz-box-shadow: 5px 5px 35px #000000;
 	-webkit-box-shadow: 5px 5px 35px #000000;
+	width: 1100px;
+	margin: 0px auto;
 }
 .sub_head{
 	background: #0098d1;
@@ -37,18 +39,19 @@ body {
 #iiwrap-rhs{
 	width: 70%;
 	height: 100%;
+	margin-right: 5px;
 	float: right;
 	box-sizing: border-box;
 	border: 1px solid black;
 }
 #db-lhs{
 	float: left;
-	width: 600px;
+	max-width: 600px;
 	box-sizing: border-box;
 }
 #db-rhs{
 	float: right;
-	padding-right: 20px;
+	padding-right: 5px;
 	box-sizing: border-box;
 }
 #db-rhs-innerWrap{
@@ -61,15 +64,19 @@ body {
 	padding: 5px;
 	float: left;
 }
-.sub-db a{
+.sub-db span, .sub-db a{
 	padding: 5px;
 	font-size: 12px;
 	margin: 5px;
 	color: #0098d1;
 }
-.sub-db a:hover{
+.sub-db span:hover, .sub-db a:hover{
 	background: #0098d1;
 	color: #fff;
+	cursor: pointer;
+}
+.active_DbLink{
+	border-bottom: 3px solid #0098d1;
 }
 .db-button{
 	display: inline-block;

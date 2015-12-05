@@ -1,7 +1,7 @@
 <?php
 	define( 'DB_USER', 'root');
 	define( 'DB_PASS', '');
-	define( 'DB_NAME', 'spms');
+	define( 'DB_NAME', 'staff_profile');
 	define( 'DB_HOST', 'localhost');
 	define( 'DB_ENCODING', '');
 

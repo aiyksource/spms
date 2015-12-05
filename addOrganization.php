@@ -1,88 +1,9 @@
 <?php 
-    session_start();
-    include("core/db_config.php");
-
-    if (isset($_POST['sbt_addOrg'])) {
-       
-        $org_name = $_POST['org_name'];
-        $org_category = $_POST['org_category'];
-        $org_email = $_POST['org_email'];
-        $org_password = md5($_POST['org_password']);
-
-        if (empty($org_name) OR empty($org_category) OR empty($org_email) OR empty($org_password)) {
-           $error = 'all fields are required';
-        } else{
-            
-            $db->get_results("SELECT * FROM users WHERE email = '$org_email' LIMIT 1");
-			$number_of_records = $db->num_rows;
-			if($number_of_records==0){
-	            if($db->query("INSERT INTO tbl_organizations (id, name, avatar, category, description, location, links, org_password, org_email, access_key, staff_count, fans, post_count, share_count, date_added) 
-	                VALUES (NULL, '".$org_name."', 'images/org_logo/default.jpg', '".$org_category."', '', '', '', '".$org_password."', '".$org_email."', '3', '0', '0', '0', '0', ". $db->sysdate()." )"))
-	            {
-	            	if ($db->query("INSERT INTO users (id, username, email, password, access, date_added) 
-	                VALUES (NULL, '".$org_name."', '".$org_email."',  '".$org_password."', '3', ". $db->sysdate()." )")) 
-	            	{
-	            		$query = $db->get_results("SELECT id FROM tbl_organizations WHERE org_email = '$org_email' LIMIT 1");
-	            		foreach ( $query as $result ) {
-			        		$id = $result->id;
-			        	}
-	            		$success = $org_name.' successfully created.';
-		            	$_SESSION['user'] = $org_name;
-		            	$_SESSION['id'] = $id;
-						$_SESSION['access'] = 3;
-	            	}
-
-	            } else{
-	            	$error=$org_name." wasn\'t successfully created, try again later.";
-	            }
-	        	
-			} else{
-				$error = 'an account already exists for this email address';
-			}
-        }
-    }
-?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>SPMS - New Organization</title>
-	<link href="css/main.css" rel="stylesheet" type="text/css"/>
-	
-	<script type="text/javascript">
-		$('#org_category').on('focusin', function(){	
-			$('#ul_categoriesDisplay').fadeIn();
-		});
-		$('#org_category').on('focusout', function(){	
-			$('#ul_categoriesDisplay').hide();
-		});
-		function auto_suggest(element){
-			$('#org_category').val(element.text());
-			$('#ul_categoriesDisplay').fadeOut();
-		}
-
-	</script>
-</head>
-<body>
-	<div class="container">
-		<?php 
-        	if(isset($_SESSION['user']) && isset($_SESSION['access'])){
-				$user= $_SESSION['user'];
-				echo'<div id="loggedinuser">Hello '.$user.' <a href="signout.php">Log Out</a></div>';
-			}
-	    ?>
-		<div id="main_logo"><img src="images/logo.png"></div>
-		<h3 class="main_header">Staff Profile Management System</h3>
+    if ($_POST) {
+	    echo '
+		<span class="sub_head">Create New Business/Corporate Organization</span>
 		<div id="addMember" class="sect-wrap">
-	        <?php 
-				if (isset($error)) {
-					echo '<div class="error">'.$error.'</div>';
-				}
-				if (isset($success)) {
-					echo '<div class="success">'.$success.'</div>';
-				}
-			?>
-			<span class="sub_head">Create New Business/Corporate Organization</span>
-			<form id="addMember_form" method="POST" action="addOrganization.php">
+			<form method="POST" action="index.php">
 				<div class="input-wrap">
 					<label for="org_name">Organization:</label>
 					<input id="org_name" name="org_name" type="text"/>
@@ -103,8 +24,6 @@
 				<input type ="submit" id="sbt_addOrg" name="sbt_addOrg" class="button" value="CREATE ORGANIZATION"/>
 			</form>
 	    </div>
-	</div>
-	<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
-    <script type="text/javascript" src="js/ajax.js"></script>
-</body>
-</html>
+	    ';
+	}
+?>

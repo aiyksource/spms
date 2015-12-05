@@ -1,6 +1,102 @@
 <?php 
     session_start();
     include("core/db_config.php");
+
+    if (isset($_POST['sbt_addMember'])) {
+       
+        $firstname = $_POST['staff_firstname'];
+        $lastname = $_POST['staff_lastname'];
+        $fullname = $firstname.' '.$lastname;
+        $title = $_POST['staff_title'];
+        $email = $_POST['staff_email'];
+        $org = $_SESSION['id'];
+
+        if (empty($firstname) OR empty($lastname) OR empty($title) OR empty($email)) {
+           $error = 'all fields are required';
+        } else{
+            
+            $db->get_results("SELECT * FROM users WHERE email = '$email' LIMIT 1");
+			$number_of_records = $db->num_rows;
+			if($number_of_records==0){
+				$password = md5('password');
+	            if($db->query("INSERT INTO members (id, firstname, lastname, job_title, password, email, avatar, organization, access, date_added) 
+	                VALUES (NULL, '".$firstname."', '".$lastname."', '".$title."', '".$password."', '".$email."', 'images/member_logo/default.jpg', '".$org."', '4', ". $db->sysdate()." )"))
+	        	{
+	        		if ($db->query("INSERT INTO users (id, username, email, password, access, date_added) 
+	                VALUES (NULL, '".$fullname."', '".$email."',  '".$password."', '4', ". $db->sysdate()." )")) 
+	            	{
+	            		$staff_count = $db->get_var("SELECT staff_count FROM tbl_organizations WHERE id='$org'");
+	            		$staff_count = $staff_count + 1;
+	            		$update_org = $db->query("UPDATE tbl_organizations SET staff_count='$staff_count' WHERE id='$org'");
+	            		$success = $firstname.' '.$lastname.' successfully added.';
+	            	}
+	        	}
+			} else{
+				$error = 'username unavailable';
+			}
+        }
+    }
+
+    if (isset($_POST['sbt_addOrg'])) {
+       
+        $org_name = $_POST['org_name'];
+        $org_category = $_POST['org_category'];
+        $org_email = $_POST['org_email'];
+        $org_password = md5($_POST['org_password']);
+
+        if (empty($org_name) OR empty($org_category) OR empty($org_email) OR empty($org_password)) {
+           $error = 'all fields are required';
+        } else{
+            
+            $db->get_results("SELECT * FROM users WHERE email = '$org_email' LIMIT 1");
+			$number_of_records = $db->num_rows;
+			if($number_of_records==0){
+	            if($db->query("INSERT INTO tbl_organizations (id, name, avatar, category, description, location, links, org_password, org_email, access_key, staff_count, fans, post_count, share_count, date_added) 
+	                VALUES (NULL, '".$org_name."', 'images/org_logo/default.jpg', '".$org_category."', '', '', '', '".$org_password."', '".$org_email."', '3', '0', '0', '0', '0', ". $db->sysdate()." )"))
+	            {
+	            	if ($db->query("INSERT INTO users (id, username, email, password, access, date_added) 
+	                VALUES (NULL, '".$org_name."', '".$org_email."',  '".$org_password."', '3', ". $db->sysdate()." )")) 
+	            	{
+	            		$query = $db->get_results("SELECT id FROM tbl_organizations WHERE org_email = '$org_email' LIMIT 1");
+	            		foreach ( $query as $result ) {
+			        		$id = $result->id;
+			        	}
+	            		$success = $org_name.' successfully created.';
+		            	$_SESSION['user'] = $org_name;
+		            	$_SESSION['id'] = $id;
+						$_SESSION['access'] = 3;
+	            	}
+
+	            } else{
+	            	$error=$org_name." wasn\'t successfully created, try again later.";
+	            }
+	        	
+			} else{
+				$error = 'an account already exists for this email address';
+			}
+        }
+    }
+
+    if (isset($_POST['sbt_org_cat'])) {
+       
+        $txt_org_cat = $_POST['txt_org_cat'];
+        $addad_by = $_SESSION['user'];
+
+        if (empty($txt_org_cat)) {
+           $error = 'Kindly key in the category in the provide text box.';
+        } else{
+            
+            $db->get_results("SELECT * FROM tbl_org_categories WHERE category = '$txt_org_cat' LIMIT 1");
+			$number_of_records = $db->num_rows;
+			if($number_of_records==0){
+	            $db->query("INSERT INTO tbl_org_categories (id, category, added_by, date_added) 
+	                VALUES (NULL, '".$txt_org_cat."', '".$addad_by."', ". $db->sysdate()." )");
+	        	$success = $txt_org_cat.' successfully added.';
+			} else{
+				$error = 'the specified category already exists on the system.';
+			}
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -14,33 +110,31 @@
 		
 		<div id="main_logo"><img src="images/logo.png"></div>
 		<h3 class="main_header">Staff Profile Management System</h3>
-		<div id="index" class="sect-wrap">
-	        <?php 
-				if (isset($error)) {
-					echo '<div class="error">'.$error.'</div>';
-				}
-				if (isset($success)) {
-					echo '<div class="success">'.$success.'</div>';
-				}
-			?>
+		<?php 
+			if (isset($error)) {
+				echo '<div class="error">'.$error.'</div>';
+			}
+			if (isset($success)) {
+				echo '<div class="success">'.$success.'</div>';
+			}
+		?>
+		<div id="index">
 			<span class="sub_head">Home Page</span>
 			<div id="dashboard">
 				<div id="db-lhs">
 					<div class="sub-db" id="genDB1">
-						<a href="index.php">Home</a>
-						<a href="addOrganization.php">Create Roganization</a>
-						<a href="">Account</a>
-					</div>
-					<div class="sub-db" id="orgDB1">
-						<a href="">New Post</a>
-						<a href="">View Post</a>
-						<a href="addMember.php">New Staff</a>
-						<a href="">View Staff</a>
+						<a id="index_DbLink" href="index.php" class="active_DbLink">Home</a>
+						<span id="addOrganization_DbLink">Create Organization</span>
+						<span id="viewOrg_DbLink">View Organizations</span>
+						<span id="addMember_DbLink">New Staff</span>
+						<span href="">View Staff</span>
 					</div>
 					<div class="sub-db" id="adminDB1">
-						<a href="">New Category</a>
-						<a href="">View Categories</a>
-						<a href="">View Organizations</a>
+						<span id="newPost_DbLink">New Post</span>
+						<span id="viewPost_DbLink">View Post</span>
+						<span id="newCat_DbLink">New Category</span>
+						<span id="viewCat_DbLink">View Categories</span>
+						<span id="userAcc_DbLink">My Account</span>
 					</div>
 				</div>
 				<div id="db-rhs">
